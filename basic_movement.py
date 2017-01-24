@@ -41,6 +41,22 @@ def reverse(duty):
 	motor_pwm_left.ChangeDutyCycle(duty)
 	motor_pwm_right.ChangeDutyCycle(duty)
 
+def left(duty):
+	GPIO.output(in_left_1, False)
+	GPIO.output(in_left_2, True)
+	GPIO.output(in_right_1, True)
+	GPIO.output(in_right_2, False)
+	motor_pwm_left.ChangeDutyCycle(duty)
+	motor_pwm_right.ChangeDutyCycle(duty)
+
+def right(duty):
+	GPIO.output(in_left_1, True)
+	GPIO.output(in_left_2, False)
+	GPIO.output(in_right_1, False)
+	GPIO.output(in_right_2, True)
+	motor_pwm_left.ChangeDutyCycle(duty)
+	motor_pwm_right.ChangeDutyCycle(duty)
+
 def stop():
 	GPIO.output(in_left_1, False)
 	GPIO.output(in_left_2, False)
@@ -49,18 +65,24 @@ def stop():
 
 try:
 	while True:
-		direction = raw_input('Enter direction letter (f - forward, r - reverse, s - stop, x - exit): ')
+		direction = raw_input('Enter direction letter (f - forward, b - reverse, l - left, r - right, s - stop, x - exit): ')
 		if direction[0] == 's':
 			stop()
-		elif direction[0] =='x':
-			stop()
-			break
 		else:
 			duty = input('Enter Duty Cycle (0 to 100): ')
 			if direction[0] == 'f':
 				forward(duty)
-			elif direction[0] == 'r':
+			elif direction[0] == 'b':
 				reverse(duty)
+			elif direction[0] == 'l':
+				left(duty)
+			elif direction[0] == 'r':
+				right(duty)
+			elif direction[0] == 'x':
+				stop()
+				break
+			else:
+				print("Invalid Choice")
 finally:
 	print("Cleaning up")
 	GPIO.cleanup()
