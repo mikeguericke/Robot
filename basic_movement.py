@@ -9,6 +9,8 @@ in_left_1 = 03
 in_left_2 = 04
 in_right_1 = 15
 in_right_2 = 17
+pwm_left = 500
+pwm_right = 500
 
 GPIO.setup(enableleft, GPIO.OUT)
 GPIO.setup(enableright, GPIO.OUT)
@@ -18,8 +20,8 @@ GPIO.setup(in_right_1, GPIO.OUT)
 GPIO.setup(in_right_2, GPIO.OUT)
 
 # set up motors and look here to alter
-motor_pwm_left = GPIO.PWM(enableleft, 500)
-motor_pwm_right = GPIO.PWM(enableright, 500)
+motor_pwm_left = GPIO.PWM(enableleft, pwm_left)
+motor_pwm_right = GPIO.PWM(enableright, pwm_right)
 motor_pwm_left.start(0)
 motor_pwm_right.start(0)
 
