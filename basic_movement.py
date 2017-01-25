@@ -3,6 +3,7 @@ import time
 
 GPIO.setmode(GPIO.BCM)
 
+# Set Up GPIO Pins
 enableleft = 02
 enableright = 14
 in_left_1 = 03
@@ -18,12 +19,19 @@ GPIO.setup(in_left_1, GPIO.OUT)
 GPIO.setup(in_left_2, GPIO.OUT)
 GPIO.setup(in_right_1, GPIO.OUT)
 GPIO.setup(in_right_2, GPIO.OUT)
+#End Set Up GPIO Pins
 
-# set up motors and look here to alter
+# Set Up Motors
 motor_pwm_left = GPIO.PWM(enableleft, pwm_left)
 motor_pwm_right = GPIO.PWM(enableright, pwm_right)
 motor_pwm_left.start(0)
 motor_pwm_right.start(0)
+#End Set Up Motors
+
+# Set Up Variables
+righttouch = 0
+lefttouch = 0
+#End Set Up Variables
 
 def forward(duty):
 	GPIO.output(in_left_1, True)
@@ -69,18 +77,27 @@ try:
 		if direction[0] == 's':
 			stop()
 		else:
+			if direction[0] == 'x':
+				stop()
+				break
 			duty = input('Enter Duty Cycle (0 to 100): ')
 			if direction[0] == 'f':
-				forward(duty)
+				if righttouch and lefttouch == 0:
+					forward(duty)
+				else:
+					stop()
 			elif direction[0] == 'b':
 				reverse(duty)
 			elif direction[0] == 'l':
-				left(duty)
+				if lefttouch == 0:
+					left(duty)
+				else:
+					stop()
 			elif direction[0] == 'r':
-				right(duty)
-			elif direction[0] == 'x':
-				stop()
-				break
+				if righttouch == 0:
+					right(duty)
+				else:
+					stop()
 			else:
 				print("Invalid Choice")
 finally:
